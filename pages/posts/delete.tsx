@@ -16,27 +16,30 @@ export default function Delete() {
   const { data, isLoading, error } = useQuery("getPosts", getPosts, {
     retry: false,
   });
-  const { mutate: deleteMutation } = useMutation("deletePosts", deletePost, {
-    retry: false,
-    onSuccess: (data) => {
-      toast.success(`Post: ${data.id} deletado com sucesso`, {
-        position: "bottom-right",
-        autoClose: 5000,
-        closeOnClick: true,
-        pauseOnHover: true,
-        theme: "colored",
-      });
-    },
-    onError: () => {
-      toast.error(`Não foi possivel deletar o post`, {
-        position: "bottom-right",
-        autoClose: 5000,
-        closeOnClick: true,
-        pauseOnHover: true,
-        theme: "colored",
-      });
-    },
-  });
+  const { mutate: deleteMutation, isLoading: loadingDelete } = useMutation(
+    "deletePosts",
+    deletePost,
+    {
+      retry: false,
+      onSuccess: (data) => {
+        toast.success(`Post: ${data.id} deletado com sucesso`, {
+          position: "bottom-right",
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
+      },
+      onError: () => {
+        toast.error(`Não foi possivel deletar o post`, {
+          position: "bottom-right",
+          autoClose: 5000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          theme: "colored",
+        });
+      },
+    }
+  );
 
   const [darkTheme, setIsDarkTheme] = useLocalStorage("theme", "true");
 
@@ -118,17 +121,24 @@ export default function Delete() {
       </h1>
       <div className="grid sm:grid-cols-2 grid-cols-1 gap-10">
         {data?.map((post, i) => (
-          <button key={i} onClick={() => handleDelete(post)}>
+          <div key={i}>
             <div
               className={`border p-5 rounded-md hover:transition-all flex flex-col justify-start ${
                 isDarkTheme ? "bg-slate-700" : "bg-slate-200"
               }`}
             >
               <p className="text-left mb-3 text-2xl">{post.title}</p>
-              <p className="text-left mb-3">{post.createdAt}</p>
-              <p className="text-left mb-3">{post.id}</p>
+              <p className="text-left mb-3">Criado em: {post.createdAt}</p>
+              <p className="text-left mb-3">Id: {post.id}</p>
+              <button
+                className={`rounded-md p-2 max-h-[42px] text-white text-lg hover:brightness-105 bg-red-500 ${inter.className}`}
+                type="submit"
+                onClick={() => handleDelete(post)}
+              >
+                {loadingDelete ? <Spinner /> : "Excluir"}
+              </button>
             </div>
-          </button>
+          </div>
         ))}
       </div>
     </Template>

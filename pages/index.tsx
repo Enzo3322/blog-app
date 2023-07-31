@@ -10,9 +10,7 @@ const darkThemeClasses = "bg-gray-900 text-white";
 const whiteThemeClasses = "bg-white text-black";
 
 export default function Home() {
-  const { data, isLoading, error } = useQuery("getPosts", getPosts, {
-    retry: false,
-  });
+  const { data, isLoading, error } = useQuery("getPosts", getPosts);
 
   const [darkTheme, setIsDarkTheme] = useLocalStorage("theme", "true");
 
@@ -70,11 +68,8 @@ export default function Home() {
     return (
       <Template>
         <h1 className={`text-3xl ${inter.className}`}>
-          Ops... Parece que não temos nenhum post.
+          Ops... Não encontramos nenhum post.
         </h1>
-        <a href="/posts/create" className="underline">
-          Que tal criar um post agora
-        </a>
       </Template>
     );
   }
@@ -89,7 +84,7 @@ export default function Home() {
       </div>
       <div className="grid sm:grid-cols-2 grid-cols-1 gap-10">
         {data?.map((post, i) => (
-          <a href={`/${post.id}`} key={i} className="">
+          <a href={`/${post.id}`} key={i} className="min-w-[200px]">
             <div
               className={`border p-5 rounded-md hover:transition-all w-[100%] hover:border-gray-400 ${
                 isDarkTheme ? "bg-slate-700" : "bg-slate-100"
@@ -97,6 +92,7 @@ export default function Home() {
             >
               <p className="text-lg">{post.title}</p>
               <span className="text-sm">
+                Postado em:{" "}
                 {new Date(post.createdAt).toLocaleString("pt-BR", {
                   dateStyle: "short",
                 })}

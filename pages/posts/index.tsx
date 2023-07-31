@@ -67,14 +67,22 @@ export default function Create() {
     <Template>
       <div className="grid  grid-cols-2 gap-10">
         <a href={`/posts/create`}>
-          <div className="border p-5 rounded-md hover:transition-all w-[300px] hover:border-gray-400">
+          <div
+            className={`border p-5 rounded-md hover:transition-all w-[300px] hover:border-gray-400 ${
+              isDarkTheme ? "bg-slate-700" : "bg-slate-200"
+            }`}
+          >
             <p className="text-lg">Criar</p>
             <span className="text-sm">Crie um novo post</span>
           </div>
         </a>
 
         <a href={`/posts/delete`}>
-          <div className="border p-5 rounded-md hover:transition-all w-[300px] hover:border-gray-400">
+          <div
+            className={`border p-5 rounded-md hover:transition-all w-[300px] hover:border-gray-400 ${
+              isDarkTheme ? "bg-slate-700" : "bg-slate-200"
+            }`}
+          >
             <p className="text-lg">Excluir</p>
             <span className="text-sm">Remova posts</span>
           </div>
