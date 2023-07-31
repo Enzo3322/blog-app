@@ -1,6 +1,6 @@
 const API_URL = 'http://localhost:5000/posts'
 
-interface Post {
+export interface Post {
     id: string,
     createdAt: string,
     updatedAt: string,
@@ -10,7 +10,7 @@ interface Post {
     related: string
 }
 
-interface PartialPost {
+export interface PartialPost {
     id: string,
     createdAt: string,
     title: string,
@@ -36,6 +36,7 @@ export const getPostById = async ({ id }: { id: string }): Promise<Post> => {
     return json
 }
 
+
 interface CreatePostProps {
     title: string
     content: string
@@ -50,6 +51,18 @@ export const createPost = async (data: CreatePostProps): Promise<Post> => {
         headers: {
             'Content-Type': 'application/json'
         }
+    })
+
+    if (!res.ok) throw new Error()
+
+    const json = await res.json()
+
+    return json
+}
+
+export const deletePost = async (id: string): Promise<Post> => {
+    const res = await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
     })
 
     if (!res.ok) throw new Error()
